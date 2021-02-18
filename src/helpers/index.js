@@ -7,6 +7,14 @@ export const moneyToNumber = money => {
   return Number(money)
 }
 
+export const numberToMoney = number => {
+  return number.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  })
+}
+
 export default {
-  moneyToNumber
+  moneyToNumber,
+  numberToMoney
 }

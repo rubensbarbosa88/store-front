@@ -24,14 +24,6 @@
               <v-col cols="12">
                 <v-text-field
                   validate-on-blur
-                  label="Código"
-                  :rules="[rules.required]"
-                  v-model="form.code"
-                  required />
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  validate-on-blur
                   label="Produto"
                   :rules="[rules.required]"
                   v-model="form.product"
@@ -68,10 +60,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          color="blue darken-1"
           text
-          @click="saveProduct"
-        >
+          color="blue darken-1"
+          :loading="sendingRequest"
+          @click="saveProduct">
           Salvar
         </v-btn>
       </v-card-actions>
@@ -89,8 +81,8 @@ export default {
     value: Boolean
   },
   data: () => ({
+    sendingRequest: false,
     form: {
-      code: null,
       product: null,
       purchasePrice: 0.0,
       salePrice: 0.0
@@ -119,8 +111,23 @@ export default {
       this.show = false
       this.$refs.formNewProduct.reset()
     },
-    saveProduct () {
-      this.$refs.formNewProduct.validate()
+    async saveProduct () {
+      if (!this.$refs.formNewProduct.validate()) return
+
+      try {
+        this.sendingRequest = true
+        const payload = {
+          product: this.form.product,
+          purchasePrice: moneyToNumber(this.form.purchasePrice),
+          salePrice: moneyToNumber(this.form.salePrice)
+        }
+
+        await this.$store.dispatch('saveProduct', payload)
+        await this.$store.dispatch('getProducts')
+        this.closeDialog()
+      } finally {
+        this.sendingRequest = false
+      }
     }
   }
 }

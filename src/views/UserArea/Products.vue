@@ -26,8 +26,24 @@
       :loading="!isLoaded"
       hide-default-footer
       loading-text=""
-      no-data-text="Você ainda não cadastrou nenhum produto"
-    />
+      no-data-text="Você ainda não cadastrou nenhum produto">
+      <template v-slot:[`item.product`]="{ item }">
+        {{capitalizeFirstLetter(item.product)}}
+      </template>
+      <template v-slot:[`item.purchasePrice`]="{ item }">
+        {{moneyFormat(item.purchasePrice)}}
+      </template>
+      <template v-slot:[`item.salePrice`]="{ item }">
+        {{moneyFormat(item.salePrice)}}
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+          @click="deleteProduct(item)"
+          color="red">
+          mdi-trash-can-outline
+        </v-icon>
+      </template>
+    </v-data-table>
 
     <dialog-new-product v-model="dialogNewProduct"/>
   </v-card>
@@ -35,6 +51,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { numberToMoney } from '@/helpers'
 
 export default {
   components: {
@@ -48,11 +65,24 @@ export default {
       { text: 'Código', value: 'code' },
       { text: 'Descrição', value: 'product' },
       { text: 'Custo', value: 'purchasePrice' },
-      { text: 'Preço', value: 'salePrice' }
+      { text: 'Preço', value: 'salePrice' },
+      { text: '', value: 'actions', sortable: false }
     ]
   }),
   computed: {
     ...mapState(['products'])
+  },
+  methods: {
+    capitalizeFirstLetter (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    moneyFormat (number) {
+      return numberToMoney(number)
+    },
+    deleteProduct (product) {
+      // eslint-disable-next-line no-console
+      console.log(product)
+    }
   },
   async created () {
     await this.$store.dispatch('getProducts')
