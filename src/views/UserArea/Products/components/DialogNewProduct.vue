@@ -61,9 +61,15 @@
         <v-spacer></v-spacer>
         <v-btn
           text
+          color="red darken-1"
+          @click="closeDialog">
+          Cancelar
+        </v-btn>
+        <v-btn
+          text
           color="blue darken-1"
           :loading="sendingRequest"
-          @click="saveProduct">
+          @click="createProduct">
           Salvar
         </v-btn>
       </v-card-actions>
@@ -111,18 +117,18 @@ export default {
       this.show = false
       this.$refs.formNewProduct.reset()
     },
-    async saveProduct () {
+    async createProduct () {
       if (!this.$refs.formNewProduct.validate()) return
+      this.sendingRequest = true
 
       try {
-        this.sendingRequest = true
         const payload = {
           product: this.form.product,
           purchasePrice: moneyToNumber(this.form.purchasePrice),
           salePrice: moneyToNumber(this.form.salePrice)
         }
 
-        await this.$store.dispatch('saveProduct', payload)
+        await this.$store.dispatch('createProduct', payload)
         await this.$store.dispatch('getProducts')
         this.closeDialog()
       } finally {

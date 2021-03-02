@@ -4,5 +4,7 @@ export default {
     error: false,
     message: ''
   },
-  products: []
+  products: [],
+  incomingProducts: [],
+  inventory: []
 }

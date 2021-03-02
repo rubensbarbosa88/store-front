@@ -8,7 +8,7 @@
 
       <v-card-text class="pa-10 px-12">
         <div :class="{'px-8': $vuetify.breakpoint.width > 500}">
-          <h1 class="mb-12"> Club KS - Login </h1>
+          <h1 class="mb-12"> Login </h1>
           <v-form ref="loginForm">
             <v-text-field
               label="Usuário"

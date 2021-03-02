@@ -15,19 +15,41 @@ const routes = [
     component: () => import('@/views/Login/LoginPage.vue')
   },
   {
-    path: '/home',
+    path: '/',
     name: 'UserArea',
     component: () => import('@/views/UserArea/UserArea.vue'),
     children: [
       {
-        path: '',
+        path: 'home',
         name: 'Home',
         component: () => import('@/views/UserArea/Home.vue')
       },
       {
         path: 'produtos',
         name: 'Produtos',
-        component: () => import('@/views/UserArea/Products.vue')
+        component: () => import('@/views/UserArea/Products/Products.vue')
+      },
+      {
+        path: 'estoque',
+        name: 'Estoque',
+        component: () => import('@/views/UserArea/Inventory/Inventory.vue'),
+        children: [
+          {
+            path: '',
+            name: 'Estoque',
+            component: () => import('@/views/UserArea/Inventory/InventoryProducts.vue')
+          },
+          {
+            path: 'entradas',
+            name: 'Entrada',
+            component: () => import('@/views/UserArea/Inventory/IncomingProducts.vue')
+          },
+          {
+            path: 'saidas',
+            name: 'Saida',
+            component: () => import('@/views/UserArea/Inventory/OutputProducts.vue')
+          }
+        ]
       }
     ]
   }

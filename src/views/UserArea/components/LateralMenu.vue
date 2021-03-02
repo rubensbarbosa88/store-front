@@ -28,6 +28,7 @@
       <v-list-item
         v-for="(item, index) in menuItens"
         :key="index"
+        @click="navigateTo(item.title)"
         link>
         <v-list-item-icon>
           <v-icon>{{item.icon}}</v-icon>
@@ -45,10 +46,16 @@ export default {
   data: () => ({
     menuItens: [
       { icon: 'mdi-dropbox', title: 'Produtos' },
-      { icon: 'mdi-cart-plus', title: 'Entrada' },
-      { icon: 'mdi-truck-delivery', title: 'Saída' },
-      { icon: 'mdi-calendar-clock', title: 'Histórico' }
+      // { icon: 'mdi-cart-plus', title: 'Entrada' },
+      { icon: 'mdi-inbox-multiple', title: 'Estoque' }
+      // { icon: 'mdi-truck-delivery', title: 'Saída' },
+      // { icon: 'mdi-calendar-clock', title: 'Histórico' }
     ]
-  })
+  }),
+  methods: {
+    navigateTo (name) {
+      this.$router.push({ name })
+    }
+  }
 }
 </script>
